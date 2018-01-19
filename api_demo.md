@@ -652,3 +652,39 @@ GET /cars/transactions/_search?search_type=count
     }
 }
 ```
+
+**聚合demo**
+```
+GET /<index>/<type>/_search
+{
+  "size": 10,
+  "query": {
+    "match": {
+      "title": "炮台"
+    }
+  },
+  "aggs": {
+    "times_all": {
+      "terms": {
+        "field": "times"
+      }
+    },
+    "location_all": {
+      "terms": {
+        "field": "location",
+        "size": 3
+      }
+    },
+    "category_all": {
+      "terms": {
+        "field": "category"
+      }
+    },
+    "channel_all": {
+      "terms": {
+        "field": "channel"
+      }
+    }
+  }
+}
+```
