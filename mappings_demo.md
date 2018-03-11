@@ -214,9 +214,9 @@ PUT gdszx
 }
 ```
 
-**创建一个分词规则**
+**创建一个分词规则, 然后在mappings上应用该规则**
 ```
-PUT /index_name
+PUT /wsb
 {
   "index": {
     "analysis": {
@@ -226,6 +226,95 @@ PUT /index_name
           "pattern": ","
         }
       }
+    }
+  }
+}
+
+POST wsb/news/_mapping
+{
+  "properties": {
+    "channel": {
+      "type": "text",
+      "analyzer": "douhao",
+      "search_analyzer": "douhao"
+    },
+    "tags": {
+      "type": "text",
+      "analyzer": "ik_smart",
+      "search_analyzer": "ik_smart"
+    },
+    "docid": {
+      "index": false,
+      "type": "keyword",
+      "norms": false
+    },
+    "pic": {
+      "index": false,
+      "type": "keyword",
+      "norms": false
+    },
+    "url": {
+      "index": false,
+      "type": "keyword",
+      "norms": false
+    },
+    "activityplace": {
+      "type": "keyword",
+      "norms": false
+    },
+    "region": {
+      "type": "keyword",
+      "norms": false
+    },
+    "docsource": {
+      "type": "keyword",
+      "norms": false
+    },
+    "attr": {
+      "type": "keyword",
+      "norms": false
+    },
+    "abroad": {
+      "type": "keyword",
+      "norms": false
+    },
+    "beltandroad": {
+      "type": "keyword",
+      "norms": false
+    },
+    "friendlycity": {
+      "type": "keyword",
+      "norms": false
+    },
+    "company500": {
+      "type": "keyword",
+      "norms": false
+    },
+    "eventtime": {
+      "type": "keyword",
+      "norms": false
+    },
+    "pname": {
+      "type": "keyword",
+      "norms": false
+    },
+    "abstract": {
+      "type": "text",
+      "analyzer": "ik_smart",
+      "search_analyzer": "ik_smart",
+      "term_vector": "with_positions_offsets"
+    },
+    "title": {
+      "store": true,
+      "type": "text",
+      "analyzer": "ik_smart",
+      "search_analyzer": "ik_smart",
+      "term_vector": "with_positions_offsets",
+      "boost": 4
+    },
+    "pdate": {
+      "type": "date",
+      "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm||yyyy-MM-dd||yyyy.MM.dd||epoch_second"
     }
   }
 }
