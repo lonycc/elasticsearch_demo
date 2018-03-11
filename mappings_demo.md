@@ -213,3 +213,20 @@ PUT gdszx
   }
 }
 ```
+
+**创建一个分词规则**
+```
+PUT /index_name
+{
+  "index": {
+    "analysis": {
+      "analyzer": {
+        "douhao": {
+          "type": "pattern",
+		      "pattern": ","
+        }
+      }
+    }
+  }
+}
+```
