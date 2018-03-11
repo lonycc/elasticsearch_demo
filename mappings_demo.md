@@ -223,7 +223,7 @@ PUT /index_name
       "analyzer": {
         "douhao": {
           "type": "pattern",
-		      "pattern": ","
+          "pattern": ","
         }
       }
     }
