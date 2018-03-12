@@ -248,6 +248,10 @@ POST wsb/news/_mapping
       "type": "keyword",
       "norms": false
     },
+    "status": {
+      "index": true,
+      "type": "keyword"
+    },    
     "pic": {
       "index": false,
       "type": "keyword",
