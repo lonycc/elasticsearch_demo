@@ -299,8 +299,9 @@ POST wsb/news/_mapping
       "norms": false
     },
     "pname": {
-      "type": "keyword",
-      "norms": false
+      "type": "text",
+      "analyzer": "douhao",
+      "search_analyzer": "douhao"     
     },
     "abstract": {
       "type": "text",
