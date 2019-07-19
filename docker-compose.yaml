@@ -1,0 +1,78 @@
+version '3'
+services:
+  elasticsearch:
+    image: elasticsearch:7.2.0
+    container_name: elasticsearch
+    restart: always
+    dns:
+      - 119.29.29.29
+      - 114.114.114.114
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    network_mode: bridge
+    volumes:
+      - ./data/plugins:/usr/share/elasticsearch/plugins
+      - ./data/data:/usr/share/elasticsearch/data
+  
+  kibana:
+    image: kibana:7.2.0
+    container_name: kibana
+    network_mode: bridge
+    restart: always
+    ports:
+      - "5601:5601"
+    links:
+      - elasticsearch:elasticsearch
+      
+  search_api:
+    context: ./search_api
+    build: ./Dockerfile
+    volumes:
+      - .:/code
+    ports:
+      - "5000:5000"
+    external_links:
+      - mysql:mysql
+      - pg:postgresql
+    networks:
+      - "mynet"
+    extra_hosts:
+     - "somehost:127.0.0.1"
+     - "otherhost:127.0.0.1"
+    command: bash -c 'python /code/search_api/app.py'
+    
+  
+  mongo:
+    image: mongo:4.1
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - /data/mongodb:/data/app
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    command: mongod --dbpath /data/app --replSet myset --oplogSize 128
+
+  mongo-express:
+    image: mongo-express:4.1
+    restart: always
+    depends_on:
+      - mongo
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+    
+  cache:
+    image: redis:latest
+  
+ networks:
+  mynet:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.17.3.1/24
+        - gatway: 172.17.3.1
